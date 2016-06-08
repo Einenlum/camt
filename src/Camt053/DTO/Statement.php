@@ -1,5 +1,6 @@
 <?php
-namespace Genkgo\Camt\Camt053;
+
+namespace Genkgo\Camt\Camt053\DTO;
 
 /**
  * Class Statement
@@ -8,7 +9,7 @@ namespace Genkgo\Camt\Camt053;
 class Statement
 {
     /**
-     * @var
+     * @var string
      */
     private $id;
     /**
@@ -29,7 +30,7 @@ class Statement
     private $entries = [];
 
     /**
-     * @param $id
+     * @param string $id
      * @param \DateTimeImmutable $createdOn
      * @param Account $account
      */
@@ -41,7 +42,7 @@ class Statement
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {

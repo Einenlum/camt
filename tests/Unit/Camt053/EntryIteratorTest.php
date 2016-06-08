@@ -1,9 +1,11 @@
 <?php
+
 namespace Genkgo\Camt\Unit\Camt053;
 
 use Genkgo\Camt\AbstractTestCase;
 use Genkgo\Camt\Camt053\Decoder;
-use Genkgo\Camt\Camt053\Entry;
+use Genkgo\Camt\Camt053\MessageFormat;
+use Genkgo\Camt\Camt053\DTO;
 
 class EntryIteratorTest extends AbstractTestCase
 {
@@ -11,7 +13,7 @@ class EntryIteratorTest extends AbstractTestCase
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->load(__DIR__.'/Stubs/camt053.multi.statement.xml');
-        return (new Decoder('/assets/camt.053.001.02.xsd'))->decode($dom);
+        return (new MessageFormat\Camt053V02)->getDecoder()->decode($dom);
     }
 
     public function testMultipleStatements()
@@ -21,7 +23,7 @@ class EntryIteratorTest extends AbstractTestCase
 
         $item = 0;
         foreach ($entries as $entry) {
-            /* @var $entry Entry */
+            /* @var DTO\Entry $entry */
             if ($item === 0) {
                 $this->assertEquals(885, $entry->getAmount()->getAmount());
                 $this->assertEquals(
@@ -31,6 +33,10 @@ class EntryIteratorTest extends AbstractTestCase
                 $this->assertEquals(
                     'Company Name 1',
                     $entry->getTransactionDetail()->getRelatedParty()->getRelatedPartyType()->getName()
+                );
+                $this->assertEquals(
+                   'NL',
+                   $entry->getTransactionDetail()->getRelatedParty()->getRelatedPartyType()->getAddress()->getCountry()
                 );
                 $this->assertEquals(
                     '000000001',
@@ -47,6 +53,10 @@ class EntryIteratorTest extends AbstractTestCase
                 $this->assertEquals(
                     'Company Name 2',
                     $entry->getTransactionDetail()->getRelatedParty()->getRelatedPartyType()->getName()
+                );
+                $this->assertEquals(
+                   'FR',
+                   $entry->getTransactionDetail()->getRelatedParty()->getRelatedPartyType()->getAddress()->getCountry()
                 );
                 $this->assertEquals(
                     '000000002',
